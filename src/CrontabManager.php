@@ -559,31 +559,42 @@ class CrontabManager {
     }
 
     /**
+     * Get the hash part from a job
+     * @param string $job
+     */
+    private function _getJobHash($job)
+    {
+      return trim(end(explode('#', $job)));
+    }
+
+    /**
      * Verify if a job exists or not.
      * <p>
      * Exemple of uses:
      * </p>
      * <pre>
      * $crontab = new CrontabManager();
-     * $result = $crontab->jobExists("* * * * * /path/to/job");
+     * $result = $crontab->jobExists($crontab->newJob()->on('* * * * *')->doJob('echo foo'));
      * </pre>
      *
-     * @param string $job id or part of description of the job you wanna verify if exists or not
+     * @param CronEntry $job
      * @return boolean [true|false] true if exists. false if not exists
      */
-    function jobExists($job = null) {
-        if (!is_null($job)) {
-            $jobs = explode("\n", $this->listJobs()); // get the old jobs
-            if (is_array($jobs)) {
-                foreach ($jobs as $oneJob) {
-                    if ($oneJob != '') {
-                        if (preg_match('/' . $job . '/', $oneJob)) {
-                           return true;
-                        }
+    function jobExists(CronEntry $job) {
+
+        $job = $job->render();
+        $jobToken = $this->_getJobHash($job);
+        $jobs = explode("\n", $this->listJobs()); // get the old jobs
+        if (is_array($jobs)) {
+            foreach ($jobs as $oneJob) {
+                if ($oneJob != '') {
+                    if ($jobToken === $this->_getJobHash($oneJob)) {
+                       return true;
                     }
                 }
             }
         }
+
         return false;
     }
 

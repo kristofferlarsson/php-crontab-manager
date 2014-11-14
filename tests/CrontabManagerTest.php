@@ -24,7 +24,7 @@ class CrontabManagerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $content = file_get_contents(__DIR__ . '/resources/cronfile.txt');
-        
+
         $manager = new MockCrontabManager();
         $manager->setInitialContents($content);
         $manager->crontab = 'php ' . __DIR__ . '/mock/crontab.php';
@@ -287,5 +287,19 @@ class CrontabManagerTest extends \PHPUnit_Framework_TestCase
         $actual = $this->object->__mock_command();
 
         $this->assertEquals($expected, $actual);
+    }
+
+    public function test_jobExists()
+    {
+
+      $job = $this->object->newJob('1 2 3 4 5 testExist');
+      $this->object->add($job);
+
+      $this->assertFalse($this->object->jobExists($job));
+
+      $this->object->save();
+
+      $this->assertTrue($this->object->jobExists($job));
+
     }
 }
