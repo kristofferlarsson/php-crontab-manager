@@ -1,0 +1,35 @@
+{
+	"name": "kristofferlarsson/php-crontab-manager",
+	"description": "PHP Crontab Manager",
+	"keywords": ["cron"],
+	"homepage": "http://technology.mediovski.pl",
+	"type": "library",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Mediovski Technology",
+			"email": "k.suszynski@mediovski.pl",
+			"homepage": "https://github.com/MediovskiTechnology",
+			"role": "Author"
+		},
+    {
+      "name": "Kristoffer Larsson",
+      "email": "kristoffer.larsson@mtgx.se",
+      "homepage": "https://github.com/kristofferlarsson",
+      "role": "Added support for composer"
+    }
+	],
+	"bin": [
+		"bin/cronman"
+	],
+	"require": {
+		"php": ">=5.3.0"
+	},
+	"autoload": {
+		"classmap" : [
+			"src/CliTool.php",
+      "src/CronEntry.php",
+      "src/CrontabManager.php"
+		]
+	}
+}
