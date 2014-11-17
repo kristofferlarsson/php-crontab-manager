@@ -293,6 +293,7 @@ class CrontabManagerTest extends \PHPUnit_Framework_TestCase
     {
 
       $job = $this->object->newJob('1 2 3 4 5 testExist');
+      $job2 = $this->object->newJob('5 5 3 2 1 testExist2');
       $this->object->add($job);
 
       $this->assertFalse($this->object->jobExists($job));
@@ -300,6 +301,14 @@ class CrontabManagerTest extends \PHPUnit_Framework_TestCase
       $this->object->save();
 
       $this->assertTrue($this->object->jobExists($job));
+      $this->assertFalse($this->object->jobExists($job2));
+
+      $this->object->add($job2);
+
+      $this->object->save();
+
+      $this->assertTrue($this->object->jobExists($job), "Failed to assert that first job still exists after second save");
+      $this->assertTrue($this->object->jobExists($job2), "Failed to assert that job two exists after second save");
 
     }
 }
